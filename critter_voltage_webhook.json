@@ -1,0 +1,17 @@
+{
+  "event":"VOLTAGE",
+  "url":"https://api.banc.io/kinesis/stream/critter",
+  "requestType":"POST",
+  "headers":{
+     "x-api-key":"lDa1amxOQ564rB2PgW81n6NIevAvGLMJ5BPzzKfm",
+     "Content-Type":"application/json"
+  },
+  "json": {
+    "event": {
+      "event_type": "VOLTAGE",
+      "event_value": "{{PARTICLE_EVENT_VALUE}}",
+      "device_id": "{{PARTICLE_DEVICE_ID}}",
+      "timestamp": "{{PARTICLE_PUBLISHED_AT}}"
+    }
+  }
+}

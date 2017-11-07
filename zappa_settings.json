@@ -1,0 +1,25 @@
+{
+    "prod": {
+        "aws_region": "us-west-2", 
+        "profile_name": "default", 
+        "project_name": "critter-consume", 
+        "runtime": "python2.7", 
+        "s3_bucket": "zappa-critter-consumer",
+        "keep_warm": false,
+        "apigateway_enabled": false,
+        "manage_roles": false,
+        "role_name": "critter-consume-prod-ZappaLambdaExecutionRole",
+        "timeout_seconds": 60,
+        "events": [
+            {
+                "function": "critter_consumer.critter_handler",
+                "event_source": {
+                  "arn":  "arn:aws:kinesis:us-west-2:151695558095:stream/critter",
+                  "starting_position": "TRIM_HORIZON",
+                  "batch_size": 10,
+                  "enabled": true
+                }
+            }
+        ]
+    }
+}
