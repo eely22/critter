@@ -3,6 +3,7 @@ import json
 import base64
 import logging
 from dateutil import parser
+from decimal import *
 
 # -----------------------------------------------------------------------------------------------
 class SMSAutomation:
@@ -28,14 +29,14 @@ def critter_handler(event, context):
 
 def process_critter_battery_event(data):
     dynamodb = boto3.resource('dynamodb')
-    devices_table = dynamodb.Table("critter_device_names")
+    devices_table = dynamodb.Table("critter_devices")
 
     # save the last reported voltage to the devices table
     device = devices_table.get_item(Key={"device_id": data['device_id']})
     if "Item" in device:
         item = device["Item"]
         item["last_reported_timestamp"] = str(data['timestamp'])
-        item["last_reported_voltage"] = round(int(data['event_value']) / 1024.0 * 3.6 * 1000) / 1000
+        item["last_reported_voltage"] = Decimal(str(round(int(data['event_value']) / 1024.0 * 3.6 * 1000) / 1000))
         devices_table.put_item(Item=item)
 
 def process_critter_action_event(data):
