@@ -13,7 +13,7 @@ of when it was received.
 
 ### Deployment
 
-This project uses [zappa](https://github.com/Miserlou/Zappa)to deploy. You will first need to change some basic config,
+This project uses [zappa](https://github.com/Miserlou/Zappa) to deploy. You will first need to change some basic config,
 such as the Kinesis ARN in the zappa_settings.json file.
 
 To deploy, make sure you have the correct aws credentials on your system and do the following (on mac or linux):
