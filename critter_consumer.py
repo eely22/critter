@@ -56,7 +56,6 @@ def process_critter_action_event(data):
     events_table.put_item(Item=item)
 
     if 'event_type' in data and data['event_type'] == "TRAP_TRIGGERED":
-        #TODO Look up phone number and send SMS
         devices_table = dynamodb.Table("critter_devices")
         device_name = devices_table.get_item(Key={"device_id": item['device_id']})
 
@@ -65,5 +64,6 @@ def process_critter_action_event(data):
             name = device_name["Item"]["name"]
 
 
-        sns = SMSAutomation()
-        sns.send_critter_alert("+13023775569", trap_name=name)
+        if "Item" in device_name and 'phone_number' in device_name["Item"]['phone_number']:
+            sns = SMSAutomation()
+            sns.send_critter_alert(device_name["Item"]['phone_number'], trap_name=name)
