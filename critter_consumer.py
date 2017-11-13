@@ -11,6 +11,7 @@ class SMSAutomation:
         self.__client = boto3.client('sns', region_name=region)
 
     def send_critter_alert(self, phone_number, trap_name=None):
+        logging.info("sending sms to %s" % phone_number)
         self.__client.publish(
             PhoneNumber = phone_number,
             Message="Trap sprung!" + ("" if trap_name is None else " Check trap %s" % trap_name)
@@ -57,13 +58,13 @@ def process_critter_action_event(data):
 
     if 'event_type' in data and data['event_type'] == "TRAP_TRIGGERED":
         devices_table = dynamodb.Table("critter_devices")
-        device_name = devices_table.get_item(Key={"device_id": item['device_id']})
+        device = devices_table.get_item(Key={"device_id": item['device_id']})
 
         name = None
-        if "Item" in device_name and "name" in device_name["Item"]:
-            name = device_name["Item"]["name"]
+        if "Item" in device and "name" in device["Item"]:
+            name = device["Item"]["name"]
 
 
-        if "Item" in device_name and 'phone_number' in device_name["Item"]['phone_number']:
+        if "Item" in device and 'phone_number' in device["Item"]:
             sns = SMSAutomation()
-            sns.send_critter_alert(device_name["Item"]['phone_number'], trap_name=name)
+            sns.send_critter_alert(device["Item"]['phone_number'], trap_name=name)
