@@ -1,7 +1,7 @@
 import boto3, time, json
 
 region = 'us-west-2'
-stream_to_create = 'critter_test'
+stream_to_create = 'critter'
 
 def wait_until_exists(kinesis, stream_name):
     response = kinesis.describe_stream(StreamName=stream_name)
